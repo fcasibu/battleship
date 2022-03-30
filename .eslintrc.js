@@ -16,4 +16,12 @@ module.exports = {
     "no-plusplus": ["error", { allowForLoopAfterthoughts: true }],
     "no-param-reassign": 0,
   },
+  overrides: [
+    {
+      files: "**/*.test.js",
+      env: {
+        jest: true,
+      },
+    },
+  ],
 };

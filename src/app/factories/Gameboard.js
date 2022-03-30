@@ -45,9 +45,7 @@ export default function Gameboard() {
   }
 
   function checkAllSunkShip() {
-    let allShipSunk = false;
-    allShipSunk = getAllShip().every((el) => el.isSunk());
-    return allShipSunk;
+    return getAllShip().every((el) => el.isSunk());
   }
 
   return {
