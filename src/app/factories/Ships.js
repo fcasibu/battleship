@@ -20,7 +20,6 @@ export default function Ship(SHIP_INFO) {
 
   function hit(pos) {
     ship.splice(pos, 1, "hit");
-    console.log(ship);
   }
 
   function isSunk() {
