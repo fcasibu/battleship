@@ -36,32 +36,32 @@ export default function Gameboard() {
     return deployedShips;
   }
 
-  function checkSunkShip(x, y) {
-    return !board[y][x] ? false : board[y][x].isSunk();
+  function checkSunkShip(xCoord, yCoord) {
+    return !board[yCoord][xCoord] ? false : board[yCoord][xCoord].isSunk();
   }
 
   function checkAllSunkShip() {
     return getAllShips().every((ship) => ship.isSunk());
   }
 
-  function checkBoardEdges(type, x, y) {
-    const isNegative = x < 0 || y < 0;
-    const isOverBoard = y > 9;
+  function checkBoardEdges(type, xCoord, yCoord) {
+    const isNegative = xCoord < 0 || yCoord < 0;
+    const isOverBoard = yCoord > 9;
     const isEdgeOfBoard = isNegative || isOverBoard;
-    if ((type === "Carrier" && x > 5) || y > 5 || isEdgeOfBoard) {
+    if ((type === "Carrier" && xCoord > 5) || yCoord > 5 || isEdgeOfBoard) {
       return true;
     }
-    if ((type === "Battleship" && x > 6) || y > 6 || isEdgeOfBoard) {
+    if ((type === "Battleship" && xCoord > 6) || yCoord > 6 || isEdgeOfBoard) {
       return true;
     }
     if (
-      ((type === "Cruiser" || type === "Submarine") && x > 7) ||
-      y > 7 ||
+      ((type === "Cruiser" || type === "Submarine") && xCoord > 7) ||
+      yCoord > 7 ||
       isEdgeOfBoard
     ) {
       return true;
     }
-    if ((type === "Destroyer" && x > 8) || y > 8 || isEdgeOfBoard) {
+    if ((type === "Destroyer" && xCoord > 8) || yCoord > 8 || isEdgeOfBoard) {
       return true;
     }
     return false;
