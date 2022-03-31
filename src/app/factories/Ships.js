@@ -6,6 +6,10 @@ export default function Ship(SHIP_INFO) {
     return size;
   }
 
+  function getNonHitPositions() {
+    return ship.filter((pos) => pos !== "hit");
+  }
+
   function getShip() {
     return ship;
   }
@@ -15,15 +19,13 @@ export default function Ship(SHIP_INFO) {
   }
 
   function hit(pos) {
-    if (pos > size) return "No ship was hit";
-    if (ship[pos - 1] === "hit") return `Position ${pos} has already been hit`;
-    ship.splice(pos - 1, 1, "hit");
-    return `Position ${pos} has been hit`;
+    ship.splice(pos, 1, "hit");
+    console.log(ship);
   }
 
   function isSunk() {
     return ship.every((pos) => pos === "hit");
   }
 
-  return { getLength, getShip, getType, isSunk, hit };
+  return { getLength, getShip, getType, getNonHitPositions, isSunk, hit };
 }

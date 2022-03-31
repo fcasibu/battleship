@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      class Weather {
+        #weather;
+        #location;
+        constructor() {
+          this.#location;
+        }
+
+        async #getWeather(location) {
+          this.#weather = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?q=${location}&APPID=cdb642150b8871cb21adf69e7bd3ddd6`,
+            {
+              mode: "cors",
+            }
+          );
+
+          this.#weather = await this.#weather.json();
+
+          if (this.#weather.message !== undefined) {
+            throw this.#weather.message;
+          }
+        }
+
+        async fetchWeather(location) {
+          try {
+            await this.#getWeather(location);
+            this.#location = location;
+          } catch (e) {
+            console.log("error", e);
+          }
+        }
+      }
+
+      const weather = new Weather();
+
+      weather.fetchWeather("Manila");
+    </script>
+  </body>
+</html>
