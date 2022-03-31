@@ -1,5 +1,5 @@
 export default function helpers() {
-  const SHIP_INFO = {
+  const shipsInfo = {
     Carrier: { type: "Carrier", size: 5 },
     Battleship: { type: "Battleship", size: 4 },
     Cruiser: { type: "Cruiser", size: 3 },
@@ -7,5 +7,10 @@ export default function helpers() {
     Destroyer: { type: "Destroyer", size: 2 },
   };
 
-  return { SHIP_INFO };
+  function getRandomShip(ship) {
+    const randomShip = ship[Math.floor(Math.random() * ship.length)];
+    return ship.splice(ship.indexOf(randomShip), 1);
+  }
+
+  return { shipsInfo, getRandomShip };
 }

@@ -1,10 +1,6 @@
-export default function Ship(SHIP_INFO) {
-  const { size, type } = SHIP_INFO;
+export default function Ship(shipsInfo) {
+  const { size, type } = shipsInfo;
   const ship = Array.from({ length: size }, () => null);
-
-  function getLength() {
-    return size;
-  }
 
   function getNonHitPositions() {
     return ship.filter((pos) => pos !== "hit");
@@ -12,10 +8,6 @@ export default function Ship(SHIP_INFO) {
 
   function getShip() {
     return ship;
-  }
-
-  function getType() {
-    return type;
   }
 
   function hit(pos) {
@@ -26,5 +18,5 @@ export default function Ship(SHIP_INFO) {
     return ship.every((pos) => pos === "hit");
   }
 
-  return { getLength, getShip, getType, getNonHitPositions, isSunk, hit };
+  return { getShip, getNonHitPositions, isSunk, hit, size, type };
 }

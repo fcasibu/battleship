@@ -23,7 +23,7 @@ describe("Gameboard Factory", () => {
   test("Ship placement for Carrier at x: 5, y:3", () => {
     gameBoard.placeShip("Carrier", [3, 5]);
     const board = gameBoard.getBoard();
-    expect(board[5][3].getType()).toBe("Carrier");
+    expect(board[5][3].type).toBe("Carrier");
   });
 
   test("Missed hits should return Coordinates [4, 5]", () => {

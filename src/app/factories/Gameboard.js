@@ -7,6 +7,13 @@ export default function Gameboard() {
   );
   const missedHits = [];
   const successfulHits = [];
+  const shipsToDeploy = [
+    "Carrier",
+    "Battleship",
+    "Cruiser",
+    "Submarine",
+    "Destroyer",
+  ];
 
   function getBoard() {
     return board;
@@ -37,58 +44,68 @@ export default function Gameboard() {
     return getAllShip().every((el) => el.isSunk());
   }
 
-  function checkBoardEdges(type, x) {
-    if ((type === "Carrier" && x > 5) || x < 0) {
+  function checkBoardEdges(type, x, y) {
+    const isNegative = x < 0 || y < 0;
+    const isOverBoard = y > 9;
+    const isEdgeOfBoard = isNegative || isOverBoard;
+    if ((type === "Carrier" && x > 5) || isEdgeOfBoard) {
       return true;
     }
-    if ((type === "Battleship" && x > 6) || x < 0) {
+    if ((type === "Battleship" && x > 6) || isEdgeOfBoard) {
       return true;
     }
-    if (((type === "Cruiser" || type === "Submarine") && x > 7) || x < 0) {
+    if (
+      ((type === "Cruiser" || type === "Submarine") && x > 7) ||
+      isEdgeOfBoard
+    ) {
       return true;
     }
-    if ((type === "Destroyer" && x > 8) || x < 0) {
+    if ((type === "Destroyer" && x > 8) || isEdgeOfBoard) {
       return true;
     }
     return false;
   }
 
   function occupySpace(xCoord, yCoord, ship, size) {
-    const isOccupied = false;
     for (let i = 0; i < size; i++) {
       if (board[yCoord][xCoord - 1 + size] || board[yCoord][xCoord + i]) {
         return true;
       }
       board[yCoord][xCoord + i] = ship;
     }
-    return isOccupied;
+    return false;
   }
 
-  function placeShip(type, coord) {
-    const getShip = helpers().SHIP_INFO;
-    const ship = Ship(getShip[type]);
-    const xCoord = coord[0];
-    const yCoord = coord[1];
-    const isShipOnEdgeOfBoard = checkBoardEdges(type, xCoord);
+  function placeShip(type, [xCoord, yCoord]) {
+    const getShipInfo = helpers().shipsInfo[type];
+    const ship = Ship(getShipInfo);
+    const isShipOnEdgeOfBoard = checkBoardEdges(type, xCoord, yCoord);
+    const isSpaceOccupied = occupySpace(xCoord, yCoord, ship, getShipInfo.size);
     if (isShipOnEdgeOfBoard) {
       return `${type} can't be placed there`;
     }
-    if (occupySpace(xCoord, yCoord, ship, getShip[type].size)) {
+    if (isSpaceOccupied) {
       return "Position is Occupied";
     }
     return "Ship placed successfully";
   }
 
   function receiveAttack(x, y) {
-    const isSameAttackPos = successfulHits.some(
+    if (x < 0 || x > 9 || y < 0 || y > 9) return "Invalid coordinates";
+
+    const coordinatesHasShip = board[y][x];
+    const isShipDown = checkSunkShip(x, y);
+    const isSameAttackCoord = successfulHits.some(
       (coord) => coord.x === x && coord.y === y
     );
-    if (x < 0 || x > 9 || y < 0 || y > 9) return "Invalid coordinates";
-    const isShipDown = checkSunkShip(x, y);
-    if (isShipDown) return "Ship has sunk";
-    if (isSameAttackPos) return "Can't attack the same coordinates";
+    const isSameMissedAttackCoord = missedHits.some(
+      (coord) => coord.x === x && coord.y === y
+    );
 
-    if (board[y][x]) {
+    if (isShipDown) return "Ship has sunk";
+    if (isSameAttackCoord) return "Can't attack the same coordinates";
+    if (isSameMissedAttackCoord) return "Can't attack the same coordinates";
+    if (coordinatesHasShip) {
       const getNonHitLength = board[y][x].getNonHitPositions().length;
       successfulHits.push({ x, y });
       board[y][x].hit(getNonHitLength - 1);
@@ -98,6 +115,28 @@ export default function Gameboard() {
     return `Missed at x: ${x} and y: ${y}`;
   }
 
+  function randomizeShipPlacement() {
+    const SHIP_COUNT = 5;
+
+    for (let i = 0; i < SHIP_COUNT; i++) {
+      const randomShip = helpers().getRandomShip(shipsToDeploy);
+      const randomIndex = Math.floor(Math.random() * (SHIP_COUNT + 1));
+      placeShip(randomShip, [randomIndex, i]);
+    }
+  }
+
+  function randomizeBoard() {
+    for (let i = board.length - 1; i > 0; i--) {
+      const randomIndex = Math.floor(Math.random() * (i + 1));
+      [board[i], board[randomIndex]] = [board[randomIndex], board[i]];
+    }
+  }
+
+  function autoPlaceShips() {
+    randomizeShipPlacement();
+    randomizeBoard();
+  }
+
   return {
     getBoard,
     placeShip,
@@ -105,5 +144,6 @@ export default function Gameboard() {
     getMissedHits,
     checkAllSunkShip,
     checkBoardEdges,
+    autoPlaceShips,
   };
 }

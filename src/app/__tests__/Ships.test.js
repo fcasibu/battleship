@@ -8,7 +8,7 @@ describe("Ship Factory", () => {
   });
 
   test("Should return a length of 5", () => {
-    expect(ship.getLength()).toBe(5);
+    expect(ship.size).toBe(5);
   });
 
   test("Should return false if ship has not sunk", () => {
