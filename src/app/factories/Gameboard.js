@@ -3,7 +3,7 @@ import helpers from "../helpers/helpers";
 
 export default function Gameboard() {
   const board = Array.from({ length: 10 }, () =>
-    Array.from({ length: 10 }, () => null)
+    Array.from({ length: 10 }, () => "")
   );
   const missedHits = [];
   const successfulHits = [];
@@ -23,44 +23,45 @@ export default function Gameboard() {
     return missedHits;
   }
 
-  function getAllShip() {
-    const shipArr = [];
+  function getAllShips() {
+    const deployedShips = [];
     for (let i = 0; i < board.length; i++) {
       const row = board[i];
       for (let j = 0; j < row.length; j++) {
-        if (row[j] !== null) {
-          shipArr.push(row[j]);
+        if (row[j]) {
+          deployedShips.push(row[j]);
         }
       }
     }
-    return shipArr;
+    return deployedShips;
   }
 
   function checkSunkShip(x, y) {
-    return board[y][x] === null ? false : board[y][x].isSunk();
+    return !board[y][x] ? false : board[y][x].isSunk();
   }
 
   function checkAllSunkShip() {
-    return getAllShip().every((el) => el.isSunk());
+    return getAllShips().every((ship) => ship.isSunk());
   }
 
   function checkBoardEdges(type, x, y) {
     const isNegative = x < 0 || y < 0;
     const isOverBoard = y > 9;
     const isEdgeOfBoard = isNegative || isOverBoard;
-    if ((type === "Carrier" && x > 5) || isEdgeOfBoard) {
+    if ((type === "Carrier" && x > 5) || y > 5 || isEdgeOfBoard) {
       return true;
     }
-    if ((type === "Battleship" && x > 6) || isEdgeOfBoard) {
+    if ((type === "Battleship" && x > 6) || y > 6 || isEdgeOfBoard) {
       return true;
     }
     if (
       ((type === "Cruiser" || type === "Submarine") && x > 7) ||
+      y > 7 ||
       isEdgeOfBoard
     ) {
       return true;
     }
-    if ((type === "Destroyer" && x > 8) || isEdgeOfBoard) {
+    if ((type === "Destroyer" && x > 8) || y > 8 || isEdgeOfBoard) {
       return true;
     }
     return false;
@@ -73,6 +74,7 @@ export default function Gameboard() {
       }
       board[yCoord][xCoord + i] = ship;
     }
+
     return false;
   }
 
@@ -80,39 +82,41 @@ export default function Gameboard() {
     const getShipInfo = helpers().shipsInfo[type];
     const ship = Ship(getShipInfo);
     const isShipOnEdgeOfBoard = checkBoardEdges(type, xCoord, yCoord);
-    const isSpaceOccupied = occupySpace(xCoord, yCoord, ship, getShipInfo.size);
     if (isShipOnEdgeOfBoard) {
       return `${type} can't be placed there`;
     }
+    const isSpaceOccupied = occupySpace(xCoord, yCoord, ship, getShipInfo.size);
     if (isSpaceOccupied) {
       return "Position is Occupied";
     }
     return "Ship placed successfully";
   }
 
-  function receiveAttack(x, y) {
-    if (x < 0 || x > 9 || y < 0 || y > 9) return "Invalid coordinates";
+  function receiveAttack(xCoord, yCoord) {
+    if (xCoord < 0 || xCoord > 9 || yCoord < 0 || yCoord > 9)
+      return "Invalid coordinates";
 
-    const coordinatesHasShip = board[y][x];
-    const isShipDown = checkSunkShip(x, y);
+    const coordinatesHasShip = board[yCoord][xCoord];
+    const isShipDown = checkSunkShip(xCoord, yCoord);
     const isSameAttackCoord = successfulHits.some(
-      (coord) => coord.x === x && coord.y === y
+      (hits) => hits.xCoord === xCoord && hits.yCoord === yCoord
     );
     const isSameMissedAttackCoord = missedHits.some(
-      (coord) => coord.x === x && coord.y === y
+      (hits) => hits.xCoord === xCoord && hits.yCoord === yCoord
     );
 
     if (isShipDown) return "Ship has sunk";
     if (isSameAttackCoord) return "Can't attack the same coordinates";
     if (isSameMissedAttackCoord) return "Can't attack the same coordinates";
+
     if (coordinatesHasShip) {
-      const getNonHitLength = board[y][x].getNonHitPositions().length;
-      successfulHits.push({ x, y });
-      board[y][x].hit(getNonHitLength - 1);
-      return `Position x: ${x} and y: ${y} has been hit`;
+      const getNonHitLength = board[yCoord][xCoord].getNonHitPositions().length;
+      successfulHits.push({ xCoord, yCoord });
+      board[yCoord][xCoord].hit(getNonHitLength - 1);
+      return `Position x: ${xCoord} and y: ${yCoord} has been hit`;
     }
-    missedHits.push({ x, y });
-    return `Missed at x: ${x} and y: ${y}`;
+    missedHits.push({ xCoord, yCoord });
+    return `Missed at x: ${xCoord} and y: ${yCoord}`;
   }
 
   function randomizeShipPlacement() {

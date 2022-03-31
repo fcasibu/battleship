@@ -1,6 +1,6 @@
 export default function Ship(shipsInfo) {
   const { size, type } = shipsInfo;
-  const ship = Array.from({ length: size }, () => null);
+  const ship = Array.from({ length: size }, () => "");
 
   function getNonHitPositions() {
     return ship.filter((pos) => pos !== "hit");

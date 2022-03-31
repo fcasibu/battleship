@@ -2,43 +2,32 @@
 
 Battleship project for The Odin Project. Made with HTML, CSS, and Javascript.
 
-
-
 ## Demo
-
-
-
 
 ## Screenshots
 
-
-
-
 ## Lessons Learned
-
-
-
 
 ## Acknowledgements
 
- - [The Odin Project](https://www.theodinproject.com/)
-
+- [The Odin Project](https://www.theodinproject.com/)
 
 ## TODO
 
 - Ships Factory
-  - [X] ship array
-  - [X] hit function
-  - [X] isSunk function
-  - [X] getShip function
-  - [X] getNonHitPositions function
+  - [x] ship array
+  - [x] hit function
+  - [x] isSunk function
+  - [x] getShip function
+  - [x] getNonHitPositions function
 - Gameboard Factory
-  - [X] board array
-  - [X] place ship function
-    - [X] occupy space in the board
-    - [X] check board edges
-    - [X] auto ship placement
-  - [X] check win/lose condition
+  - [x] board array
+  - [x] place ship function
+    - [x] occupy space in the board
+    - [x] check board edges
+    - [x] auto ship placement
+  - [x] check win/lose condition
+  - [ ] be able to place ships vertically
 - Players
   - [ ] be able to take turns
   - [ ] create AI
@@ -49,5 +38,3 @@ Battleship project for The Odin Project. Made with HTML, CSS, and Javascript.
   - [ ] add styling
     - [ ] small animations/effects
   - [ ] create event handlers
-
-

@@ -44,8 +44,8 @@ describe("Gameboard Factory", () => {
     gameBoard.receiveAttack(6, 6, 4);
     const getMissedHits = gameBoard.getMissedHits();
     const missedArr = [
-      { x: 4, y: 5 },
-      { x: 6, y: 6 },
+      { xCoord: 4, yCoord: 5 },
+      { xCoord: 6, yCoord: 6 },
     ];
     expect(JSON.stringify(getMissedHits)).toBe(JSON.stringify(missedArr));
   });
