@@ -28,20 +28,20 @@ describe("Gameboard Factory", () => {
 
   test("Missed hits should return false", () => {
     gameBoard.placeShip("Carrier", [3, 5]);
-    const attack = gameBoard.receiveAttack(2, 5, 2);
+    const attack = gameBoard.receiveAttack(2, 5);
     expect(attack).toBeFalsy();
   });
 
   test("Test for successful hit", () => {
     gameBoard.placeShip("Carrier", [4, 5]);
-    const attack = gameBoard.receiveAttack(4, 5, 2);
+    const attack = gameBoard.receiveAttack(4, 5);
     expect(attack).toBeTruthy();
   });
 
   test("Two missed hits should return two coordinates", () => {
     gameBoard.placeShip("Carrier", [2, 8]);
-    gameBoard.receiveAttack(4, 5, 4);
-    gameBoard.receiveAttack(6, 6, 4);
+    gameBoard.receiveAttack(4, 5);
+    gameBoard.receiveAttack(6, 6);
     const getMissedHits = gameBoard.getMissedHits();
     const missedArr = [
       { xCoord: 4, yCoord: 5 },

@@ -9,41 +9,47 @@ const eventHandler = (() => {
   const enemyBoard = document.querySelector(".enemy-board > .game-board");
   const dragHandler = () => {
     boardContainer.addEventListener("mouseover", (e) => {
-      const selected = document.querySelector(`[selected="${true}"]`);
-      let canPlace = false;
+      const selectedShip = document.querySelector(`[selected="${true}"]`);
+      let canOccupy = false;
       let shipLength;
       let shipName;
-      if (selected) {
-        shipName = selected.dataset.type;
-        shipLength = selected.childElementCount;
-        canPlace = true;
+      if (selectedShip) {
+        shipName = selectedShip.dataset.type;
+        shipLength = selectedShip.childElementCount;
+        canOccupy = true;
       }
-      if (canPlace) {
-        const xCoord = e.target.dataset.x;
+      if (canOccupy) {
         e.target.classList.add("hovered");
+        const xCoord = e.target.dataset.x;
         const yCoord = e.target.dataset.y;
         for (let i = 0; i < shipLength; i++) {
-          const foo = document.querySelector(
-            `.square[data-x="${xCoord - i}"][data-y="${yCoord}"]`
+          const square = document.querySelector(
+            `[data-x="${xCoord - i}"][data-y="${yCoord}"]`
           );
 
-          if (foo) {
-            foo.classList.add("hovered");
+          if (square) {
+            square.classList.add("hovered");
           }
         }
         e.target.addEventListener("mouseout", () => {
-          const hovered = document.querySelectorAll(".hovered");
-          hovered.forEach((hover) => hover.classList.remove("hovered"));
+          const hoveredElements = document.querySelectorAll(".hovered");
+          hoveredElements.forEach((element) =>
+            element.classList.remove("hovered")
+          );
         });
 
         e.target.addEventListener("click", () => {
-          const hovered = document.querySelectorAll(".hovered");
-          if (
-            player.ship.placeShip(shipName, [xCoord - (shipLength - 1), yCoord])
-          ) {
-            hovered.forEach((hover) => hover.classList.add("placed"));
-            selected.setAttribute("selected", false);
-            selected.setAttribute("hidden", true);
+          const hoveredElements = document.querySelectorAll(".hovered");
+          const canBeOccupied = player.ship.placeShip(shipName, [
+            xCoord - (shipLength - 1),
+            yCoord,
+          ]);
+          if (canBeOccupied) {
+            hoveredElements.forEach((element) =>
+              element.classList.add("occupied")
+            );
+            selectedShip.setAttribute("selected", false);
+            selectedShip.setAttribute("hidden", true);
           }
         });
       }
@@ -59,16 +65,18 @@ const eventHandler = (() => {
 
     enemyBoard.addEventListener("click", (e) => {
       if (e.target.classList.contains("square")) {
-        console.log(e.target);
         const xCoord = e.target.dataset.x;
         const yCoord = e.target.dataset.y;
-        if (computer.ship.receiveAttack(xCoord, yCoord)) {
+        const canBeAttacked = computer.ship.receiveAttack(xCoord, yCoord);
+        const allShipDown = computer.ship.checkAllSunkShip();
+        if (canBeAttacked) {
           e.target.classList.add("hit");
           e.target.classList.remove("hide-ship");
         } else {
           e.target.classList.add("miss");
         }
-        if (computer.ship.checkAllSunkShip()) {
+
+        if (allShipDown) {
           enemyBoard.style.opacity = 0.5;
           enemyBoard.style.pointerEvents = "none";
         }

@@ -78,13 +78,13 @@
   background: $mariner-600;
 }
 
-.placed {
+.occupied {
   background: $mariner-600;
   outline: 1px solid $mariner-300;
   transition: all 300ms ease-in-out;
 }
 
-.square:hover {
+.enemy-board .square:hover {
   background: rgba(0, 255, 0, 0.2);
   border: 1px solid red;
 }
