@@ -6,5 +6,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   <script defer src="main.js"></script><link href="style.css" rel="stylesheet"></head>
-  <body></body>
+  <body>
+    <header class="header"></header>
+    <main class="content">
+      <div class="options">
+        <div class="ships-container flow">
+          <div class="title">Ships to Deploy</div>
+          <div
+            class="carrier flex"
+            data-type="Carrier"
+            hidden="false"
+            selected="false"
+          ></div>
+          <div
+            class="battleship flex"
+            data-type="Battleship"
+            hidden="false"
+            selected="false"
+          ></div>
+          <div class="cruiser flex" data-type="Cruiser" hidden="false"></div>
+          <div
+            class="submarine flex"
+            data-type="Submarine"
+            hidden="false"
+            selected="false"
+          ></div>
+          <div
+            class="destroyer flex"
+            data-type="Destroyer"
+            hidden="false"
+            selected="false"
+          ></div>
+        </div>
+      </div>
+      <div class="player-board"></div>
+      <div class="enemy-board"></div>
+    </main>
+  </body>
 </html>

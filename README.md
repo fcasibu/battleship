@@ -31,10 +31,12 @@ Battleship project for The Odin Project. Made with HTML, CSS, and Javascript.
 - Players
   - [ ] be able to take turns
   - [ ] create AI
-    - [ ] be able to do random Players
+    - [ ] be able to do random plays
     - [ ] only valid moves
+    - [ ] smart ai
 - DOM
   - [ ] create 10x10 board
   - [ ] add styling
     - [ ] small animations/effects
-  - [ ] create event handlers
+      - [ ] fix specificity issues
+  - [x] create event handlers

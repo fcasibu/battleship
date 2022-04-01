@@ -48,20 +48,19 @@ export default function Gameboard() {
     const isNegative = xCoord < 0 || yCoord < 0;
     const isOverBoard = yCoord > 9;
     const isEdgeOfBoard = isNegative || isOverBoard;
-    if ((type === "Carrier" && xCoord > 5) || yCoord > 5 || isEdgeOfBoard) {
+    if ((type === "Carrier" && xCoord > 5) || isEdgeOfBoard) {
       return true;
     }
-    if ((type === "Battleship" && xCoord > 6) || yCoord > 6 || isEdgeOfBoard) {
+    if ((type === "Battleship" && xCoord > 6) || isEdgeOfBoard) {
       return true;
     }
     if (
       ((type === "Cruiser" || type === "Submarine") && xCoord > 7) ||
-      yCoord > 7 ||
       isEdgeOfBoard
     ) {
       return true;
     }
-    if ((type === "Destroyer" && xCoord > 8) || yCoord > 8 || isEdgeOfBoard) {
+    if ((type === "Destroyer" && xCoord > 8) || isEdgeOfBoard) {
       return true;
     }
     return false;
@@ -83,13 +82,13 @@ export default function Gameboard() {
     const ship = Ship(getShipInfo);
     const isShipOnEdgeOfBoard = checkBoardEdges(type, xCoord, yCoord);
     if (isShipOnEdgeOfBoard) {
-      return `${type} can't be placed there`;
+      return false;
     }
     const isSpaceOccupied = occupySpace(xCoord, yCoord, ship, getShipInfo.size);
     if (isSpaceOccupied) {
-      return "Position is Occupied";
+      return false;
     }
-    return "Ship placed successfully";
+    return true;
   }
 
   function receiveAttack(xCoord, yCoord) {
@@ -113,10 +112,10 @@ export default function Gameboard() {
       const getNonHitLength = board[yCoord][xCoord].getNonHitPositions().length;
       successfulHits.push({ xCoord, yCoord });
       board[yCoord][xCoord].hit(getNonHitLength - 1);
-      return `Position x: ${xCoord} and y: ${yCoord} has been hit`;
+      return true;
     }
     missedHits.push({ xCoord, yCoord });
-    return `Missed at x: ${xCoord} and y: ${yCoord}`;
+    return false;
   }
 
   function randomizeShipPlacement() {

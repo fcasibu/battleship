@@ -26,16 +26,16 @@ describe("Gameboard Factory", () => {
     expect(board[5][3].type).toBe("Carrier");
   });
 
-  test("Missed hits should return Coordinates [4, 5]", () => {
+  test("Missed hits should return false", () => {
     gameBoard.placeShip("Carrier", [3, 5]);
     const attack = gameBoard.receiveAttack(2, 5, 2);
-    expect(attack).toBe(`Missed at x: 2 and y: 5`);
+    expect(attack).toBeFalsy();
   });
 
   test("Test for successful hit", () => {
     gameBoard.placeShip("Carrier", [4, 5]);
     const attack = gameBoard.receiveAttack(4, 5, 2);
-    expect(attack).toBe(`Position x: 4 and y: 5 has been hit`);
+    expect(attack).toBeTruthy();
   });
 
   test("Two missed hits should return two coordinates", () => {
@@ -71,9 +71,9 @@ describe("Gameboard Factory", () => {
     expect(gameBoard.checkAllSunkShip()).toBeFalsy();
   });
 
-  test("Should return Position is occupied when a ship is already in place", () => {
+  test("Should return falsed when a ship is already in place", () => {
     gameBoard.placeShip("Carrier", [2, 5]);
-    expect(gameBoard.placeShip("Carrier", [4, 5])).toBe("Position is Occupied");
+    expect(gameBoard.placeShip("Carrier", [4, 5])).toBeFalsy();
   });
 
   test("Should test edges of the board", () => {
