@@ -465,13 +465,13 @@ body {
   background: #1d69ac;
 }
 
-.placed {
+.occupied {
   background: #1d69ac;
   outline: 1px solid #8fc2ea;
   transition: all 300ms ease-in-out;
 }
 
-.square:hover {
+.enemy-board .square:hover {
   background: rgba(0, 255, 0, 0.2);
   border: 1px solid red;
 }
