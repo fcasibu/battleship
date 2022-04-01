@@ -104,9 +104,9 @@ export default function Gameboard() {
       (hits) => hits.xCoord === xCoord && hits.yCoord === yCoord
     );
 
-    if (isShipDown) return "Ship has sunk";
-    if (isSameAttackCoord) return "Can't attack the same coordinates";
-    if (isSameMissedAttackCoord) return "Can't attack the same coordinates";
+    if (isShipDown) return false;
+    if (isSameAttackCoord) return false;
+    if (isSameMissedAttackCoord) return false;
 
     if (coordinatesHasShip) {
       const getNonHitLength = board[yCoord][xCoord].getNonHitPositions().length;
@@ -115,7 +115,7 @@ export default function Gameboard() {
       return true;
     }
     missedHits.push({ xCoord, yCoord });
-    return false;
+    return "Miss";
   }
 
   function randomizeShipPlacement() {

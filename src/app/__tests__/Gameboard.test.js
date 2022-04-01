@@ -26,10 +26,10 @@ describe("Gameboard Factory", () => {
     expect(board[5][3].type).toBe("Carrier");
   });
 
-  test("Missed hits should return false", () => {
+  test("Test for missed hit", () => {
     gameBoard.placeShip("Carrier", [3, 5]);
     const attack = gameBoard.receiveAttack(2, 5);
-    expect(attack).toBeFalsy();
+    expect(attack).toBe("Miss");
   });
 
   test("Test for successful hit", () => {

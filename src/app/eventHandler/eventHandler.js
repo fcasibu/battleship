@@ -72,13 +72,15 @@ const eventHandler = (() => {
         const canBeAttacked = computer.ship.receiveAttack(xCoord, yCoord);
         const allEnemyShipDown = computer.ship.checkAllSunkShip();
         const allPlayerShipDown = player.ship.checkAllSunkShip();
-        if (canBeAttacked) {
+        if (canBeAttacked === true) {
           e.target.classList.add("hit");
           e.target.classList.remove("hide-ship");
-        } else {
+          game.computerAttack();
+        } else if (canBeAttacked === "Miss") {
           e.target.classList.add("miss");
+          game.computerAttack();
         }
-        game.computerAttack();
+
         if (allEnemyShipDown) {
           enemyBoard.style.opacity = 0.5;
           enemyBoard.style.pointerEvents = "none";
