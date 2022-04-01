@@ -12,10 +12,10 @@ export default function createBoard() {
     const yCoordinates = document.createElement("div");
     const xCoordinates = document.createElement("div");
     yCoordinates.classList.add("y-coordinate");
-    yCoordinates.textContent = i;
-    yCoordinateContainer.appendChild(yCoordinates);
     xCoordinates.classList.add("x-coordinate");
+    yCoordinates.textContent = i;
     xCoordinates.textContent = i;
+    yCoordinateContainer.appendChild(yCoordinates);
     xCoordinateContainer.appendChild(xCoordinates);
     boardContainer.prepend(yCoordinateContainer);
     boardContainer.prepend(xCoordinateContainer);

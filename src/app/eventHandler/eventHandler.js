@@ -1,14 +1,15 @@
-import Player from "../factories/Players";
-import Computer from "../factories/ComputerPlayer";
+import game from "../app";
 
 const eventHandler = (() => {
-  const player = new Player("nevz");
-  const computer = new Computer();
+  const { player } = game;
+  const { computer } = game;
+  const optionsMenu = document.querySelector(".options");
   const shipsContainer = document.querySelector(".ships-container");
-  const boardContainer = document.querySelector(".player-board > .game-board");
+  const playerBoard = document.querySelector(".player-board > .game-board");
   const enemyBoard = document.querySelector(".enemy-board > .game-board");
+
   const dragHandler = () => {
-    boardContainer.addEventListener("mouseover", (e) => {
+    playerBoard.addEventListener("mouseover", (e) => {
       const selectedShip = document.querySelector(`[selected="${true}"]`);
       let canOccupy = false;
       let shipLength;
@@ -19,7 +20,6 @@ const eventHandler = (() => {
         canOccupy = true;
       }
       if (canOccupy) {
-        e.target.classList.add("hovered");
         const xCoord = e.target.dataset.x;
         const yCoord = e.target.dataset.y;
         for (let i = 0; i < shipLength; i++) {
@@ -57,6 +57,8 @@ const eventHandler = (() => {
   };
 
   const clickHandler = () => {
+    const startBtn = document.querySelector(".start-btn");
+
     shipsContainer.addEventListener("click", (e) => {
       if (e.target.dataset.type) {
         e.target.setAttribute("selected", true);
@@ -68,23 +70,39 @@ const eventHandler = (() => {
         const xCoord = e.target.dataset.x;
         const yCoord = e.target.dataset.y;
         const canBeAttacked = computer.ship.receiveAttack(xCoord, yCoord);
-        const allShipDown = computer.ship.checkAllSunkShip();
+        const allEnemyShipDown = computer.ship.checkAllSunkShip();
+        const allPlayerShipDown = player.ship.checkAllSunkShip();
         if (canBeAttacked) {
           e.target.classList.add("hit");
           e.target.classList.remove("hide-ship");
         } else {
           e.target.classList.add("miss");
         }
-
-        if (allShipDown) {
+        game.computerAttack();
+        if (allEnemyShipDown) {
+          enemyBoard.style.opacity = 0.5;
+          enemyBoard.style.pointerEvents = "none";
+        }
+        if (allPlayerShipDown) {
           enemyBoard.style.opacity = 0.5;
           enemyBoard.style.pointerEvents = "none";
         }
       }
     });
+
+    startBtn.addEventListener("click", () => {
+      const shipCount = player.ship.getAllShips().length;
+      if (shipCount >= 17) {
+        optionsMenu.classList.add("hide-options");
+        enemyBoard.classList.remove("hide-board");
+        playerBoard.classList.add("game-start");
+        computer.ship.autoPlaceShips();
+        game.createComputerShips();
+      }
+    });
   };
 
-  return { dragHandler, clickHandler, computer };
+  return { dragHandler, clickHandler };
 })();
 
 export default eventHandler;

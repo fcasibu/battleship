@@ -29,14 +29,20 @@ Battleship project for The Odin Project. Made with HTML, CSS, and Javascript.
   - [x] check win/lose condition
   - [ ] be able to place ships vertically
 - Players
-  - [ ] be able to take turns
+  - [ ] pure turn based
+    - [x] be able to take turns
   - [ ] create AI
-    - [ ] be able to do random plays
-    - [ ] only valid moves
+    - [x] be able to do random plays
+      - [x] not attack the same coordinates
+    - [x] only valid moves
     - [ ] smart ai
 - DOM
-  - [ ] create 10x10 board
+  - [x] create 10x10 board
+  - [x] add ships to deploy
+  - [ ] add restart button
+  - [ ] add announcer
   - [ ] add styling
     - [ ] small animations/effects
-      - [ ] fix specificity issues
+      - [x] fix specificity issues
   - [x] create event handlers
+  - [ ] whole code base refactor/perf optimization

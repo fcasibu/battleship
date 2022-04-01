@@ -142,6 +142,7 @@ export default function Gameboard() {
 
   return {
     getBoard,
+    getAllShips,
     placeShip,
     receiveAttack,
     getMissedHits,
