@@ -8,8 +8,9 @@
   <script defer src="main.js"></script><link href="style.css" rel="stylesheet"></head>
   <body>
     <header class="header"></header>
-    <main class="content">
-      <div class="options">
+    <main class="content flex">
+      <div class="options flow">
+        <button class="start-btn">Start game</button>
         <div class="ships-container flow">
           <div class="title">Ships to Deploy</div>
           <div
@@ -24,7 +25,12 @@
             hidden="false"
             selected="false"
           ></div>
-          <div class="cruiser flex" data-type="Cruiser" hidden="false"></div>
+          <div
+            class="cruiser flex"
+            data-type="Cruiser"
+            hidden="false"
+            selected="false"
+          ></div>
           <div
             class="submarine flex"
             data-type="Submarine"
