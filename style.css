@@ -340,106 +340,161 @@ template {
   display: none;
 }
 
-/**
- * Set up a decent box model on the root element
- */
-html {
-  box-sizing: border-box;
-}
-
-/**
- * Make all elements from the DOM inherit from the parent box-sizing
- * Since `*` has a specificity of 0, it does not override the `html` value
- * making all elements inheriting from the root box-sizing value
- * See: https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
- */
 *,
 *::before,
 *::after {
-  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/**
- * Basic styles for links
- */
+ul {
+  list-style-type: none;
+}
+
 a {
-  color: #e50050;
   text-decoration: none;
-}
-a:hover, a:active, a:focus {
-  color: #222222;
-  text-decoration: underline;
-  animation: test 1000ms;
-}
-@media (min-width: 45em) {
-  a {
-    font-size: 5rem;
-  }
+  color: var(--text-color);
 }
 
-/**
- * Basic typography style for copy text
- */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+section {
+  padding: 5rem 0;
+}
+
 body {
-  color: #222222;
-  font: normal 125%/1.4 "Open Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  background: var(--white);
+  color: var(--text-color);
+  font-size: 1rem;
+  font-family: "Public Sans", sans-serif;
+  min-height: 100vh;
 }
 
-/**
- * Clear inner floats
- */
-.clearfix::after {
-  clear: both;
-  content: "";
-  display: table;
-}
-
-/**
- * Main content containers
- * 1. Make the container full-width with a maximum width
- * 2. Center it in the viewport
- * 3. Leave some space on the edges, especially valuable on small screens
- */
 .container {
-  max-width: 1180px;
-  /* 1 */
-  margin-left: auto;
-  /* 2 */
-  margin-right: auto;
-  /* 2 */
-  padding-left: 20px;
-  /* 3 */
-  padding-right: 20px;
-  /* 3 */
+  width: 85%;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.flex {
+  display: flex;
+}
+
+.flow > * + * {
+  margin-top: var(--spacer, 1rem);
+}
+
+.section-title {
+  font-size: 1.875rem;
+  font-weight: 500;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  /* 1 */
+  min-height: 100vh;
+  gap: 5rem;
 }
 
-/**
- * Hide text while making it readable for screen readers
- * 1. Needed in WebKit-based browsers because of an implementation bug;
- *    See: https://code.google.com/p/chromium/issues/detail?id=457146
- */
-.hide-text {
-  overflow: hidden;
-  padding: 0;
-  /* 1 */
-  text-indent: 101%;
-  white-space: nowrap;
+.options .ships-container {
+  display: flex;
+  flex-direction: column;
+}
+.options .ships-container .title {
+  font-size: 1.4rem;
+  color: #19558b;
+}
+.options .ships-container .carrier,
+.options .ships-container .battleship,
+.options .ships-container .cruiser,
+.options .ships-container .submarine,
+.options .ships-container .destroyer {
+  cursor: pointer;
+}
+.options .ships-container .ship-square {
+  background: #2b82c5;
+  border: 1px solid #333;
+  width: 2.5rem;
+  height: 2.5rem;
+  pointer-events: none;
 }
 
-/**
- * Hide element while making it readable for screen readers
- * Shamelessly borrowed from HTML5Boilerplate:
- * https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css#L119-L133
- */
-.visually-hidden {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
+.game-board {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  width: 400px;
+  height: 400px;
+  transition: all 500ms ease-in-out;
+}
+.game-board .square {
+  border: 1px solid #2b82c5;
+  cursor: pointer;
+}
+.game-board .y-coordinates,
+.game-board .x-coordinates {
   position: absolute;
-  width: 1px;
+  display: flex;
+  gap: 1.6rem;
+  font-size: 0.8rem;
+  pointer-events: none;
+}
+.game-board .y-coordinates {
+  top: 13px;
+  left: -20px;
+  flex-direction: column;
+}
+.game-board .x-coordinates {
+  top: -20px;
+  left: 15px;
+  gap: 2.05rem;
+}
+
+[selected=true] .ship-square {
+  opacity: 0.6;
+}
+
+.hovered {
+  background: #1d69ac;
+}
+
+.placed {
+  background: #1d69ac;
+  outline: 1px solid #8fc2ea;
+  transition: all 300ms ease-in-out;
+}
+
+.square:hover {
+  background: rgba(0, 255, 0, 0.2);
+  border: 1px solid red;
+}
+
+.hit {
+  background: red;
+  transition: all 300ms ease-in-out;
+}
+
+[hidden=true] {
+  visibility: hidden;
+}
+
+.hide-ship {
+  background: none;
+}
+
+.attack-hover {
+  background: rgba(0, 255, 0, 0.2);
+  border: 1px solid red;
+}
+
+.miss {
+  background: #c3ddf4;
+  transition: all 300ms ease-in-out;
 }
