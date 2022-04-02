@@ -1,12 +1,19 @@
 import game from "../app";
+import dom from "../dom/dom";
 
 const eventHandler = (() => {
-  const { player } = game;
-  const { computer } = game;
-  const optionsMenu = document.querySelector(".options");
-  const shipsContainer = document.querySelector(".ships-container");
-  const playerBoard = document.querySelector(".player-board > .game-board");
-  const enemyBoard = document.querySelector(".enemy-board > .game-board");
+  const {
+    shipsContainer,
+    buttonsContainer,
+    playerBoard,
+    enemyBoard,
+    removeShipsToDeploy,
+    removeOccupied,
+    startGame,
+    endGame,
+    hoverOnBoard,
+  } = dom;
+  const { playerOne, playerTwo, checkWinCondition } = game;
 
   const dragHandler = () => {
     playerBoard.addEventListener("mouseover", (e) => {
@@ -22,15 +29,8 @@ const eventHandler = (() => {
       if (canOccupy) {
         const xCoord = e.target.dataset.x;
         const yCoord = e.target.dataset.y;
-        for (let i = 0; i < shipLength; i++) {
-          const square = document.querySelector(
-            `[data-x="${xCoord - i}"][data-y="${yCoord}"]`
-          );
+        hoverOnBoard(shipLength, xCoord, yCoord);
 
-          if (square) {
-            square.classList.add("hovered");
-          }
-        }
         e.target.addEventListener("mouseout", () => {
           const hoveredElements = document.querySelectorAll(".hovered");
           hoveredElements.forEach((element) =>
@@ -40,10 +40,11 @@ const eventHandler = (() => {
 
         e.target.addEventListener("click", () => {
           const hoveredElements = document.querySelectorAll(".hovered");
-          const canBeOccupied = player.ship.placeShip(shipName, [
+          const canBeOccupied = playerOne.ship.placeShip(shipName, [
             xCoord - (shipLength - 1),
             yCoord,
           ]);
+
           if (canBeOccupied) {
             hoveredElements.forEach((element) =>
               element.classList.add("occupied")
@@ -57,8 +58,6 @@ const eventHandler = (() => {
   };
 
   const clickHandler = () => {
-    const startBtn = document.querySelector(".start-btn");
-
     shipsContainer.addEventListener("click", (e) => {
       if (e.target.dataset.type) {
         e.target.setAttribute("selected", true);
@@ -69,10 +68,9 @@ const eventHandler = (() => {
       if (e.target.classList.contains("square")) {
         const xCoord = e.target.dataset.x;
         const yCoord = e.target.dataset.y;
-        const canBeAttacked = computer.ship.receiveAttack(xCoord, yCoord);
-        const allEnemyShipDown = computer.ship.checkAllSunkShip();
-        const allPlayerShipDown = player.ship.checkAllSunkShip();
-        if (canBeAttacked === true) {
+        const canBeAttacked = playerTwo.ship.receiveAttack(xCoord, yCoord);
+
+        if (canBeAttacked === "Hit") {
           e.target.classList.add("hit");
           e.target.classList.remove("hide-ship");
           game.computerAttack();
@@ -81,25 +79,28 @@ const eventHandler = (() => {
           game.computerAttack();
         }
 
-        if (allEnemyShipDown) {
-          enemyBoard.style.opacity = 0.5;
-          enemyBoard.style.pointerEvents = "none";
-        }
-        if (allPlayerShipDown) {
-          enemyBoard.style.opacity = 0.5;
-          enemyBoard.style.pointerEvents = "none";
-        }
+        checkWinCondition(endGame);
       }
     });
 
-    startBtn.addEventListener("click", () => {
-      const shipCount = player.ship.getAllShips().length;
-      if (shipCount >= 17) {
-        optionsMenu.classList.add("hide-options");
-        enemyBoard.classList.remove("hide-board");
-        playerBoard.classList.add("game-start");
-        computer.ship.autoPlaceShips();
-        game.createComputerShips();
+    buttonsContainer.addEventListener("click", (e) => {
+      if (e.target.classList.contains("start-btn")) {
+        const shipCount = playerOne.ship.getAllShips().length;
+        if (shipCount >= 17) {
+          startGame();
+          game.createEnemyShips();
+        }
+      }
+      if (e.target.classList.contains("auto-place")) {
+        const getAllShips = playerOne.ship.getAllShips();
+        if (!getAllShips.length) {
+          game.createPlayerShips();
+        } else {
+          removeOccupied();
+          playerOne.ship.resetBoard();
+          game.createPlayerShips();
+        }
+        removeShipsToDeploy();
       }
     });
   };

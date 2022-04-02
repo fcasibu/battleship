@@ -42,7 +42,7 @@ Battleship project for The Odin Project. Made with HTML, CSS, and Javascript.
   - [ ] add restart button
   - [ ] add announcer
   - [ ] add styling
-    - [ ] small animations/effects
+    - [x] small animations/effects
       - [x] fix specificity issues
   - [x] create event handlers
   - [ ] whole code base refactor/perf optimization

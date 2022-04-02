@@ -2,18 +2,18 @@ import Ship from "./Ships";
 import helpers from "../helpers/helpers";
 
 export default function Gameboard() {
-  const board = Array.from({ length: 10 }, () =>
+  let board = Array.from({ length: 10 }, () =>
     Array.from({ length: 10 }, () => "")
   );
-  const missedHits = [];
-  const successfulHits = [];
-  const shipsToDeploy = [
+  let shipsToDeploy = [
     "Carrier",
     "Battleship",
     "Cruiser",
     "Submarine",
     "Destroyer",
   ];
+  const missedHits = [];
+  const successfulHits = [];
 
   function getBoard() {
     return board;
@@ -91,28 +91,40 @@ export default function Gameboard() {
     return true;
   }
 
+  function isCoordinatesValid(xCoord, yCoord) {
+    return xCoord < 0 || xCoord > 9 || yCoord < 0 || yCoord > 9;
+  }
+
+  function isShipDown(xCoord, yCoord) {
+    return checkSunkShip(xCoord, yCoord);
+  }
+
+  function isSameAttackCoord(xCoord, yCoord) {
+    return successfulHits.some(
+      (hits) => hits.xCoord === xCoord && hits.yCoord === yCoord
+    );
+  }
+
+  function isSameMissedAttackCoord(xCoord, yCoord) {
+    return missedHits.some(
+      (hits) => hits.xCoord === xCoord && hits.yCoord === yCoord
+    );
+  }
+
   function receiveAttack(xCoord, yCoord) {
-    if (xCoord < 0 || xCoord > 9 || yCoord < 0 || yCoord > 9)
-      return "Invalid coordinates";
+    if (isCoordinatesValid(xCoord, yCoord)) return "Invalid coordinates";
 
     const coordinatesHasShip = board[yCoord][xCoord];
-    const isShipDown = checkSunkShip(xCoord, yCoord);
-    const isSameAttackCoord = successfulHits.some(
-      (hits) => hits.xCoord === xCoord && hits.yCoord === yCoord
-    );
-    const isSameMissedAttackCoord = missedHits.some(
-      (hits) => hits.xCoord === xCoord && hits.yCoord === yCoord
-    );
 
-    if (isShipDown) return false;
-    if (isSameAttackCoord) return false;
-    if (isSameMissedAttackCoord) return false;
+    if (isShipDown(xCoord, yCoord)) return false;
+    if (isSameAttackCoord(xCoord, yCoord)) return false;
+    if (isSameMissedAttackCoord(xCoord, yCoord)) return false;
 
     if (coordinatesHasShip) {
       const getNonHitLength = board[yCoord][xCoord].getNonHitPositions().length;
       successfulHits.push({ xCoord, yCoord });
       board[yCoord][xCoord].hit(getNonHitLength - 1);
-      return true;
+      return "Hit";
     }
     missedHits.push({ xCoord, yCoord });
     return "Miss";
@@ -140,6 +152,19 @@ export default function Gameboard() {
     randomizeBoard();
   }
 
+  function resetBoard() {
+    board = Array.from({ length: 10 }, () =>
+      Array.from({ length: 10 }, () => "")
+    );
+    shipsToDeploy = [
+      "Carrier",
+      "Battleship",
+      "Cruiser",
+      "Submarine",
+      "Destroyer",
+    ];
+  }
+
   return {
     getBoard,
     getAllShips,
@@ -149,5 +174,6 @@ export default function Gameboard() {
     checkAllSunkShip,
     checkBoardEdges,
     autoPlaceShips,
+    resetBoard,
   };
 }

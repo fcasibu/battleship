@@ -35,5 +35,30 @@ export default function helpers() {
     return ship.splice(ship.indexOf(randomShip), 1);
   }
 
-  return { shipsInfo, getRandomShip, getRandomName, addAttributesToSquare };
+  function createRandomShips(player, playerBoardClass) {
+    player.ship.autoPlaceShips();
+
+    if (playerBoardClass === "player-board") {
+      for (let i = 0; i < player.ship.getBoard().length; i++) {
+        const row = player.ship.getBoard()[i];
+
+        for (let j = 0; j < row.length; j++) {
+          const playerBoard = document.querySelector(
+            `.${playerBoardClass} > .game-board .square[data-y="${i}"][data-x="${j}"]`
+          );
+          if (row[j]) {
+            playerBoard.classList.add("occupied");
+          }
+        }
+      }
+    }
+  }
+
+  return {
+    shipsInfo,
+    getRandomShip,
+    getRandomName,
+    addAttributesToSquare,
+    createRandomShips,
+  };
 }

@@ -1,4 +1,4 @@
-function createDivs(size, type) {
+function createShipsToDeploy(size, type) {
   for (let i = 0; i < size; i++) {
     const div = document.createElement("div");
     div.classList.add("ship-square");
@@ -13,9 +13,9 @@ export default function createShips() {
   const submarine = document.querySelector(".submarine");
   const destroyer = document.querySelector(".destroyer");
 
-  createDivs(5, carrier);
-  createDivs(4, battleship);
-  createDivs(3, cruiser);
-  createDivs(3, submarine);
-  createDivs(2, destroyer);
+  createShipsToDeploy(5, carrier);
+  createShipsToDeploy(4, battleship);
+  createShipsToDeploy(3, cruiser);
+  createShipsToDeploy(3, submarine);
+  createShipsToDeploy(2, destroyer);
 }

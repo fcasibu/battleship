@@ -1,15 +1,17 @@
 import Player from "./factories/Players";
 import Computer from "./factories/ComputerPlayer";
+import helpers from "./helpers/helpers";
 
 const game = ((name) => {
-  const player = new Player(name);
-  const computer = new Computer();
+  const { createRandomShips } = helpers();
+  const playerOne = new Player(name);
+  const playerTwo = new Computer();
   const playerBoard = document.querySelectorAll(
     ".player-board > .game-board > .square"
   );
 
   function computerAttack() {
-    const { xCoord, yCoord } = computer.randomAttack(player.ship);
+    const { xCoord, yCoord } = playerTwo.randomAttack(playerOne.ship);
     for (let i = 0; i < playerBoard.length; i++) {
       const square = document.querySelector(
         `[data-x="${xCoord}"][data-y="${yCoord}"]`
@@ -23,22 +25,35 @@ const game = ((name) => {
     return { xCoord, yCoord };
   }
 
-  function createComputerShips() {
-    for (let i = 0; i < computer.ship.getBoard().length; i++) {
-      const row = computer.ship.getBoard()[i];
+  function createEnemyShips() {
+    createRandomShips(playerTwo, "enemy-board");
+  }
 
-      for (let j = 0; j < row.length; j++) {
-        const enemyBoardContainer = document.querySelector(
-          `.enemy-board .square[data-y="${i}"][data-x="${j}"]`
-        );
-        if (row[j]) {
-          enemyBoardContainer.classList.add("placed", "hide-ship");
-        }
-      }
+  function createPlayerShips() {
+    createRandomShips(playerOne, "player-board");
+  }
+
+  function checkWinCondition(endGame) {
+    const allEnemyShipDown = playerTwo.ship.checkAllSunkShip();
+    const allPlayerShipDown = playerOne.ship.checkAllSunkShip();
+
+    if (allEnemyShipDown) {
+      endGame();
+    }
+    if (allPlayerShipDown) {
+      endGame();
     }
   }
 
-  return { player, computer, playerBoard, computerAttack, createComputerShips };
+  return {
+    playerOne,
+    playerTwo,
+    playerBoard,
+    computerAttack,
+    createEnemyShips,
+    createPlayerShips,
+    checkWinCondition,
+  };
 })();
 
 export default game;

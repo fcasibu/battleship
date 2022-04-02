@@ -1,6 +1,14 @@
-.start-btn {
+%btn {
   padding: 0.5rem;
   background: $mariner-200;
   border: 1px solid $mariner-600;
   cursor: pointer;
+}
+
+.start-btn {
+  @extend %btn;
+}
+
+.auto-place {
+  @extend %btn;
 }
