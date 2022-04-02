@@ -7,6 +7,8 @@ const dom = (() => {
   const playerBoard = document.querySelector(".player-board > .game-board");
   const enemyBoard = document.querySelector(".enemy-board > .game-board");
   const buttonsContainer = document.querySelector(".buttons");
+  const playersShips = document.querySelectorAll(".ships");
+  playersShips.forEach((player) => player.classList.add("hide-options"));
 
   function removeShipsToDeploy() {
     const shipsToDeploy = document.querySelectorAll('[selected="false"');
@@ -21,10 +23,21 @@ const dom = (() => {
     );
   }
 
+  function addOccupied() {
+    const hoveredElements = document.querySelectorAll(".hovered");
+    hoveredElements.forEach((element) => element.classList.add("occupied"));
+  }
+
+  function removeHoveredElements() {
+    const hoveredElements = document.querySelectorAll(".hovered");
+    hoveredElements.forEach((element) => element.classList.remove("hovered"));
+  }
+
   function startGame() {
     optionsMenu.classList.add("hide-options");
     enemyBoard.classList.remove("hide-board");
     playerBoard.classList.add("game-start");
+    playersShips.forEach((player) => player.classList.remove("hide-options"));
   }
 
   function endGame() {
@@ -38,7 +51,7 @@ const dom = (() => {
         `[data-x="${xCoord - i}"][data-y="${yCoord}"]`
       );
 
-      if (square) {
+      if (square && !square.classList.contains("occupied")) {
         square.classList.add("hovered");
       }
     }
@@ -49,8 +62,11 @@ const dom = (() => {
     buttonsContainer,
     playerBoard,
     enemyBoard,
+    playersShips,
     removeShipsToDeploy,
     removeOccupied,
+    removeHoveredElements,
+    addOccupied,
     startGame,
     endGame,
     hoverOnBoard,

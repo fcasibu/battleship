@@ -68,8 +68,9 @@ export default function Gameboard() {
 
   function occupySpace(xCoord, yCoord, ship, size) {
     for (let i = 0; i < size; i++) {
-      if (board[yCoord][xCoord - 1 + size] || board[yCoord][xCoord + i]) {
-        return true;
+      if (board[yCoord][xCoord + i] || board[yCoord][xCoord - 1 + size]) {
+        console.log(xCoord + i);
+        return true; // Needs to change
       }
       board[yCoord][xCoord + i] = ship;
     }
@@ -81,13 +82,10 @@ export default function Gameboard() {
     const getShipInfo = helpers().shipsInfo[type];
     const ship = Ship(getShipInfo);
     const isShipOnEdgeOfBoard = checkBoardEdges(type, xCoord, yCoord);
-    if (isShipOnEdgeOfBoard) {
-      return false;
-    }
+    if (isShipOnEdgeOfBoard) return false;
+
     const isSpaceOccupied = occupySpace(xCoord, yCoord, ship, getShipInfo.size);
-    if (isSpaceOccupied) {
-      return false;
-    }
+    if (isSpaceOccupied) return false;
     return true;
   }
 

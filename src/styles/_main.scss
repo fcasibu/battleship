@@ -5,6 +5,11 @@
   width: 100%;
   min-height: 100vh;
   gap: 5rem;
+
+  .ships {
+    font-size: 1.1rem;
+    color: $mariner-900;
+  }
 }
 
 .options {

@@ -9,74 +9,35 @@ const eventHandler = (() => {
     enemyBoard,
     removeShipsToDeploy,
     removeOccupied,
+    removeHoveredElements,
+    addOccupied,
     startGame,
     endGame,
     hoverOnBoard,
   } = dom;
   const { playerOne, playerTwo, checkWinCondition } = game;
 
-  const dragHandler = () => {
-    playerBoard.addEventListener("mouseover", (e) => {
-      const selectedShip = document.querySelector(`[selected="${true}"]`);
-      let canOccupy = false;
-      let shipLength;
-      let shipName;
-      if (selectedShip) {
-        shipName = selectedShip.dataset.type;
-        shipLength = selectedShip.childElementCount;
-        canOccupy = true;
-      }
-      if (canOccupy) {
-        const xCoord = e.target.dataset.x;
-        const yCoord = e.target.dataset.y;
-        hoverOnBoard(shipLength, xCoord, yCoord);
-
-        e.target.addEventListener("mouseout", () => {
-          const hoveredElements = document.querySelectorAll(".hovered");
-          hoveredElements.forEach((element) =>
-            element.classList.remove("hovered")
-          );
-        });
-
-        e.target.addEventListener("click", () => {
-          const hoveredElements = document.querySelectorAll(".hovered");
-          const canBeOccupied = playerOne.ship.placeShip(shipName, [
-            xCoord - (shipLength - 1),
-            yCoord,
-          ]);
-
-          if (canBeOccupied) {
-            hoveredElements.forEach((element) =>
-              element.classList.add("occupied")
-            );
-            selectedShip.setAttribute("selected", false);
-            selectedShip.setAttribute("hidden", true);
-          }
-        });
-      }
-    });
-  };
-
   const clickHandler = () => {
     shipsContainer.addEventListener("click", (e) => {
+      const allShips = document.querySelectorAll(".ship");
       if (e.target.dataset.type) {
+        allShips.forEach((ship) => ship.setAttribute("selected", false));
         e.target.setAttribute("selected", true);
       }
     });
 
     enemyBoard.addEventListener("click", (e) => {
       if (e.target.classList.contains("square")) {
-        const xCoord = e.target.dataset.x;
-        const yCoord = e.target.dataset.y;
+        const { x: xCoord, y: yCoord } = e.target.dataset;
         const canBeAttacked = playerTwo.ship.receiveAttack(xCoord, yCoord);
 
         if (canBeAttacked === "Hit") {
           e.target.classList.add("hit");
           e.target.classList.remove("hide-ship");
-          game.computerAttack();
+          game.computerAttack(); // Computer's turn
         } else if (canBeAttacked === "Miss") {
           e.target.classList.add("miss");
-          game.computerAttack();
+          game.computerAttack(); // Computer's turn
         }
 
         checkWinCondition(endGame);
@@ -101,6 +62,42 @@ const eventHandler = (() => {
           game.createPlayerShips();
         }
         removeShipsToDeploy();
+      }
+    });
+  };
+
+  const dragHandler = () => {
+    playerBoard.addEventListener("mouseover", (e) => {
+      const selectedShip = document.querySelector(`[selected="${true}"]`);
+      let canOccupy = false;
+      let shipLength;
+      let shipName;
+
+      if (selectedShip) {
+        shipName = selectedShip.dataset.type;
+        shipLength = selectedShip.childElementCount;
+        canOccupy = true;
+      }
+      if (canOccupy) {
+        const { x: xCoord, y: yCoord } = e.target.dataset;
+        hoverOnBoard(shipLength, xCoord, yCoord);
+
+        e.target.addEventListener("mouseout", () => {
+          removeHoveredElements();
+        });
+
+        e.target.addEventListener("click", () => {
+          const canBeOccupied = playerOne.ship.placeShip(shipName, [
+            +xCoord - (shipLength - 1),
+            +yCoord,
+          ]);
+
+          if (canBeOccupied) {
+            selectedShip.setAttribute("selected", false);
+            selectedShip.setAttribute("hidden", true);
+            addOccupied();
+          }
+        });
       }
     });
   };
