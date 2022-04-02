@@ -1,16 +1,23 @@
-# todo-list
+# battleship
 
 Battleship project for The Odin Project. Made with HTML, CSS, and Javascript.
 
 ## Demo
 
+[Live Preview](https://nevz9.github.io/battleship/)
+
 ## Screenshots
 
+![App Screenshot](preview.png)
+
 ## Lessons Learned
+
+I learned a lot about Test Driven Development. It greatly helps with the logic and how we write our code, based on the tests. As a result we will encounter lesser bugs. It was definitely a learning experience, although I'm still not confident with it as I got used to logging everything in the console and using the debugger.
 
 ## Acknowledgements
 
 - [The Odin Project](https://www.theodinproject.com/)
+- [Design Inspiration](http://en.battleship-game.org/)
 
 ## TODO
 
