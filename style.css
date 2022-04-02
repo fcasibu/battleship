@@ -394,7 +394,7 @@ body {
   font-weight: 500;
 }
 
-.start-btn {
+.auto-place, .start-btn {
   padding: 0.5rem;
   background: #c3ddf4;
   border: 1px solid #1d69ac;
@@ -444,6 +444,7 @@ body {
 .game-board .square {
   border: 1px solid #2b82c5;
   cursor: pointer;
+  user-select: none;
 }
 .game-board .y-coordinates,
 .game-board .x-coordinates {
@@ -483,8 +484,30 @@ body {
 }
 
 .hit {
-  background: red !important;
-  transition: all 300ms ease-in-out;
+  position: relative;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 0, 0, 0.2) !important;
+  outline: 1px solid red;
+  transition: all 500ms ease-in-out;
+}
+.hit::after {
+  content: "X";
+  position: absolute;
+  font-size: 1.6rem;
+  color: red;
+  animation: hitmark 500ms ease-in-out;
+}
+@keyframes hitmark {
+  from {
+    transform: scale(1.4);
+  }
+  50% {
+    transform: scale(0.6);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 
 [hidden=true] {
@@ -507,7 +530,7 @@ body {
 }
 
 .miss {
-  background: #c3ddf4 !important;
+  background: #e4eefa !important;
   transition: all 300ms ease-in-out;
 }
 
