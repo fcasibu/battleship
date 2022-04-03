@@ -11,8 +11,11 @@ const dom = (() => {
   playersShips.forEach((player) => player.classList.add("hide-options"));
 
   function removeShipsToDeploy() {
-    const shipsToDeploy = document.querySelectorAll(`[selected="false"]`);
-    shipsToDeploy.forEach((ship) => ship.setAttribute("hidden", "true"));
+    const shipsToDeploy = document.querySelectorAll(`.ship`);
+    shipsToDeploy.forEach((ship) => {
+      ship.setAttribute("hidden", "true");
+      ship.setAttribute("selected", false);
+    });
   }
 
   function removeOccupied() {

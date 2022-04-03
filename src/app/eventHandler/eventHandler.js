@@ -30,7 +30,6 @@ const eventHandler = (() => {
       if (e.target.classList.contains("square")) {
         const { x: xCoord, y: yCoord } = e.target.dataset;
         const canBeAttacked = playerTwo.ship.receiveAttack(xCoord, yCoord);
-
         if (canBeAttacked === "Hit") {
           e.target.classList.add("hit");
           e.target.classList.remove("hide-ship");
@@ -74,16 +73,16 @@ const eventHandler = (() => {
           const shipLength = selectedShip.childElementCount;
           const { x: xCoord, y: yCoord } = e.target.dataset;
           const isSpaceAvailable = playerOne.ship.checkAvailableSpace(
-            +xCoord - (shipLength - 1),
-            +yCoord,
+            xCoord - (shipLength - 1),
+            yCoord,
             shipName,
             shipLength
           );
 
           if (isSpaceAvailable) {
             playerOne.ship.placeShip(shipName, [
-              +xCoord - (shipLength - 1),
-              +yCoord,
+              xCoord - (shipLength - 1),
+              yCoord,
             ]);
             addOccupied();
             selectedShip.setAttribute("selected", "false");

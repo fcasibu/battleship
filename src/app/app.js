@@ -2,9 +2,9 @@ import Player from "./factories/Players";
 import Computer from "./factories/ComputerPlayer";
 import helpers from "./helpers/helpers";
 
-const game = ((name) => {
+const game = (() => {
   const { createRandomShips } = helpers();
-  const playerOne = new Player(name);
+  const playerOne = new Player();
   const playerTwo = new Computer();
   const playerBoard = document.querySelectorAll(
     ".player-board > .game-board > .square"
