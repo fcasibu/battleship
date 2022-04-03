@@ -54,7 +54,6 @@ const eventHandler = (() => {
       }
       if (e.target.classList.contains("auto-place")) {
         const isShipContainerEmpty = playerOne.ship.getAllShips().length;
-        console.log(isShipContainerEmpty);
         if (!isShipContainerEmpty) {
           game.createPlayerShips();
         } else {

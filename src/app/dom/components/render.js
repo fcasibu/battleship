@@ -10,8 +10,4 @@ export default function renderBoard() {
   playerBoard.appendChild(player);
   enemyBoard.appendChild(playerTwo);
   createShips();
-  const squares = document.querySelectorAll(".square");
-  for (let i = 0; i < 10 * 10; i++) {
-    squares[i].setAttribute("data-index", i);
-  }
 }
