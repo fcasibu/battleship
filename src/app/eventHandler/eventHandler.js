@@ -54,6 +54,7 @@ const eventHandler = (() => {
       }
       if (e.target.classList.contains("auto-place")) {
         const isShipContainerEmpty = playerOne.ship.getAllShips().length;
+        console.log(isShipContainerEmpty);
         if (!isShipContainerEmpty) {
           game.createPlayerShips();
         } else {
@@ -64,29 +65,16 @@ const eventHandler = (() => {
         removeShipsToDeploy();
       }
     });
-  };
 
-  const dragHandler = () => {
-    playerBoard.addEventListener("mouseover", (e) => {
-      const selectedShip = document.querySelector(`[selected="${true}"]`);
-      let canHoverOnBoard = false;
-      let shipLength;
-      let shipName;
+    playerBoard.addEventListener("click", (e) => {
+      if (e.target.classList.contains("square")) {
+        const selectedShip = document.querySelector(`[selected="${true}"]`);
 
-      if (selectedShip) {
-        shipName = selectedShip.dataset.type;
-        shipLength = selectedShip.childElementCount;
-        canHoverOnBoard = true;
-      }
-      if (canHoverOnBoard) {
-        const { x: xCoord, y: yCoord } = e.target.dataset;
-        hoverOnBoard(xCoord, yCoord, shipLength);
-
-        e.target.addEventListener("mouseout", () => {
-          removeHoveredElements();
-        });
-
-        e.target.addEventListener("click", () => {
+        if (selectedShip) {
+          const shipName = selectedShip.dataset.type;
+          const shipLength = selectedShip.childElementCount;
+          const { x: xCoord, y: yCoord } = e.target.dataset;
+          console.log(playerOne.ship.board);
           const isSpaceAvailable = playerOne.ship.checkAvailableSpace(
             +xCoord - (shipLength - 1),
             +yCoord,
@@ -103,12 +91,33 @@ const eventHandler = (() => {
             selectedShip.setAttribute("selected", "false");
             selectedShip.setAttribute("hidden", "true");
           }
+        }
+      }
+    });
+  };
+
+  const hoverHandler = () => {
+    playerBoard.addEventListener("mouseover", (e) => {
+      const selectedShip = document.querySelector(`[selected="${true}"]`);
+      let canHoverOnBoard = false;
+      let shipLength;
+
+      if (selectedShip) {
+        shipLength = selectedShip.childElementCount;
+        canHoverOnBoard = true;
+      }
+      if (canHoverOnBoard) {
+        const { x: xCoord, y: yCoord } = e.target.dataset;
+        hoverOnBoard(xCoord, yCoord, shipLength);
+
+        e.target.addEventListener("mouseout", () => {
+          removeHoveredElements();
         });
       }
     });
   };
 
-  return { dragHandler, clickHandler };
+  return { hoverHandler, clickHandler };
 })();
 
 export default eventHandler;
