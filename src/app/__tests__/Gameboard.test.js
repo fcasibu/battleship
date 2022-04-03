@@ -16,13 +16,13 @@ describe("Gameboard Factory", () => {
   test("Board Creation", () => {
     const boardArray = gameBoard.board;
     expect(boardArray).toEqual(
-      expect.not.arrayContaining([expect.not.arrayContaining([null])])
+      expect.not.arrayContaining([expect.not.arrayContaining([""])])
     );
   });
 
   test("Ship placement for Carrier at x: 5, y:3", () => {
     gameBoard.placeShip("Carrier", [3, 5]);
-    const board = gameBoard.getBoard();
+    const { board } = gameBoard;
     expect(board[5][3].type).toBe("Carrier");
   });
 
@@ -35,7 +35,7 @@ describe("Gameboard Factory", () => {
   test("Test for successful hit", () => {
     gameBoard.placeShip("Carrier", [4, 5]);
     const attack = gameBoard.receiveAttack(4, 5);
-    expect(attack).toBeTruthy();
+    expect(attack).toBe("Hit");
   });
 
   test("Two missed hits should return two coordinates", () => {
@@ -71,17 +71,22 @@ describe("Gameboard Factory", () => {
     expect(gameBoard.checkAllSunkShip()).toBeFalsy();
   });
 
-  test("Should return falsed when a ship is already in place", () => {
+  test("Should return false when a ship is already in place", () => {
     gameBoard.placeShip("Carrier", [2, 5]);
-    expect(gameBoard.placeShip("Carrier", [4, 5])).toBeFalsy();
+    gameBoard.placeShip("Destroyer", [1, 8]);
+    expect(gameBoard.checkAvailableSpace(5, 5, "Carrier", 5)).toBeFalsy();
+    expect(gameBoard.checkAvailableSpace(2, 8, "Destroyer", 2)).toBeFalsy();
   });
 
   test("Should test edges of the board", () => {
-    const carrier = "Carrier";
+    const type = "Carrier";
     const xCoord = 7;
+    const yCoord = 1;
     const xCoordNegative = -1;
-    expect(gameBoard.checkBoardEdges(carrier, xCoord)).toBeTruthy();
-    expect(gameBoard.checkBoardEdges(carrier, xCoordNegative)).toBeTruthy();
+    expect(gameBoard.checkBoardEdges(xCoord, yCoord, type)).toBeTruthy();
+    expect(
+      gameBoard.checkBoardEdges(xCoordNegative, yCoord, type)
+    ).toBeTruthy();
   });
 
   test("Should not be able to attack outside the board", () => {

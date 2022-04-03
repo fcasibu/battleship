@@ -99,7 +99,6 @@ const eventHandler = (() => {
               +xCoord - (shipLength - 1),
               +yCoord,
             ]);
-            console.log(playerOne.ship.board);
             addOccupied();
             selectedShip.setAttribute("selected", "false");
             selectedShip.setAttribute("hidden", "true");

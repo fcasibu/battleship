@@ -15,10 +15,6 @@ export default function Gameboard() {
   const missedHits = [];
   const successfulHits = [];
 
-  function getBoard() {
-    return board;
-  }
-
   function getMissedHits() {
     return missedHits;
   }
@@ -160,7 +156,7 @@ export default function Gameboard() {
   }
 
   return {
-    getBoard,
+    board,
     getAllShips,
     placeShip,
     receiveAttack,
