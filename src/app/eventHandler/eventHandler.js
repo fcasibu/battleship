@@ -74,7 +74,6 @@ const eventHandler = (() => {
           const shipName = selectedShip.dataset.type;
           const shipLength = selectedShip.childElementCount;
           const { x: xCoord, y: yCoord } = e.target.dataset;
-          console.log(playerOne.ship.board);
           const isSpaceAvailable = playerOne.ship.checkAvailableSpace(
             +xCoord - (shipLength - 1),
             +yCoord,

@@ -39,8 +39,8 @@ export default function helpers() {
     player.ship.autoPlaceShips();
 
     if (playerBoardClass === "player-board") {
-      for (let i = 0; i < player.ship.board.length; i++) {
-        const row = player.ship.board[i];
+      for (let i = 0; i < player.ship.getBoard().length; i++) {
+        const row = player.ship.getBoard()[i];
 
         for (let j = 0; j < row.length; j++) {
           const playerBoard = document.querySelector(
