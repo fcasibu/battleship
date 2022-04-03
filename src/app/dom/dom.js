@@ -11,8 +11,8 @@ const dom = (() => {
   playersShips.forEach((player) => player.classList.add("hide-options"));
 
   function removeShipsToDeploy() {
-    const shipsToDeploy = document.querySelectorAll('[selected="false"');
-    shipsToDeploy.forEach((ship) => ship.setAttribute("hidden", true));
+    const shipsToDeploy = document.querySelectorAll(`[selected="false"]`);
+    shipsToDeploy.forEach((ship) => ship.setAttribute("hidden", "true"));
   }
 
   function removeOccupied() {
@@ -41,11 +41,11 @@ const dom = (() => {
   }
 
   function endGame() {
-    enemyBoard.style.opacity = 0.5;
+    enemyBoard.style.opacity = "0.5";
     enemyBoard.style.pointerEvents = "none";
   }
 
-  function hoverOnBoard(shipLength, xCoord, yCoord) {
+  function hoverOnBoard(xCoord, yCoord, shipLength) {
     for (let i = 0; i < shipLength; i++) {
       const square = document.querySelector(
         `[data-x="${xCoord - i}"][data-y="${yCoord}"]`

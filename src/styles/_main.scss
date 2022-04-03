@@ -87,7 +87,6 @@
 .occupied {
   background: $mariner-600;
   outline: 1px solid $mariner-300;
-  transition: all 300ms ease-in-out;
 }
 
 .enemy-board .square:hover {

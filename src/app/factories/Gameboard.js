@@ -44,7 +44,7 @@ export default function Gameboard() {
     return getAllShips().every((ship) => ship.isSunk());
   }
 
-  function checkBoardEdges(type, xCoord, yCoord) {
+  function checkBoardEdges(xCoord, yCoord, type) {
     const isNegative = xCoord < 0 || yCoord < 0;
     const isOverBoard = yCoord > 9;
     const isEdgeOfBoard = isNegative || isOverBoard;
@@ -60,33 +60,29 @@ export default function Gameboard() {
     ) {
       return true;
     }
-    if ((type === "Destroyer" && xCoord > 8) || isEdgeOfBoard) {
-      return true;
-    }
-    return false;
+    return (type === "Destroyer" && xCoord > 8) || isEdgeOfBoard;
+  }
+
+  function checkAvailableSpace(xCoord, yCoord, type, size) {
+    const isEdgeOfBoard = checkBoardEdges(xCoord, yCoord, type);
+
+    if (isEdgeOfBoard) return false;
+    const leftOfShip = board[yCoord][xCoord];
+    const rightOfShip = board[yCoord][xCoord + size - 1];
+
+    return !(leftOfShip || rightOfShip);
   }
 
   function occupySpace(xCoord, yCoord, ship, size) {
     for (let i = 0; i < size; i++) {
-      if (board[yCoord][xCoord + i] || board[yCoord][xCoord - 1 + size]) {
-        console.log(xCoord + i);
-        return true; // Needs to change
-      }
       board[yCoord][xCoord + i] = ship;
     }
-
-    return false;
   }
 
   function placeShip(type, [xCoord, yCoord]) {
     const getShipInfo = helpers().shipsInfo[type];
     const ship = Ship(getShipInfo);
-    const isShipOnEdgeOfBoard = checkBoardEdges(type, xCoord, yCoord);
-    if (isShipOnEdgeOfBoard) return false;
-
-    const isSpaceOccupied = occupySpace(xCoord, yCoord, ship, getShipInfo.size);
-    if (isSpaceOccupied) return false;
-    return true;
+    occupySpace(xCoord, yCoord, ship, getShipInfo.size);
   }
 
   function isCoordinatesValid(xCoord, yCoord) {
@@ -170,6 +166,7 @@ export default function Gameboard() {
     receiveAttack,
     getMissedHits,
     checkAllSunkShip,
+    checkAvailableSpace,
     checkBoardEdges,
     autoPlaceShips,
     resetBoard,

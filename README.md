@@ -46,9 +46,8 @@ I learned a lot about Test Driven Development. It greatly helps with the logic a
 - DOM
   - [x] create 10x10 board
   - [x] add ships to deploy
-  - [ ] add restart button
   - [ ] add announcer
-  - [ ] add styling
+  - [x] add styling
     - [x] small animations/effects
       - [x] fix specificity issues
   - [x] create event handlers

@@ -21,7 +21,7 @@ const eventHandler = (() => {
     shipsContainer.addEventListener("click", (e) => {
       const allShips = document.querySelectorAll(".ship");
       if (e.target.dataset.type) {
-        allShips.forEach((ship) => ship.setAttribute("selected", false));
+        allShips.forEach((ship) => ship.setAttribute("selected", "false"));
         e.target.setAttribute("selected", true);
       }
     });
@@ -53,8 +53,8 @@ const eventHandler = (() => {
         }
       }
       if (e.target.classList.contains("auto-place")) {
-        const getAllShips = playerOne.ship.getAllShips();
-        if (!getAllShips.length) {
+        const isShipContainerEmpty = playerOne.ship.getAllShips().length;
+        if (!isShipContainerEmpty) {
           game.createPlayerShips();
         } else {
           removeOccupied();
@@ -69,33 +69,40 @@ const eventHandler = (() => {
   const dragHandler = () => {
     playerBoard.addEventListener("mouseover", (e) => {
       const selectedShip = document.querySelector(`[selected="${true}"]`);
-      let canOccupy = false;
+      let canHoverOnBoard = false;
       let shipLength;
       let shipName;
 
       if (selectedShip) {
         shipName = selectedShip.dataset.type;
         shipLength = selectedShip.childElementCount;
-        canOccupy = true;
+        canHoverOnBoard = true;
       }
-      if (canOccupy) {
+      if (canHoverOnBoard) {
         const { x: xCoord, y: yCoord } = e.target.dataset;
-        hoverOnBoard(shipLength, xCoord, yCoord);
+        hoverOnBoard(xCoord, yCoord, shipLength);
 
         e.target.addEventListener("mouseout", () => {
           removeHoveredElements();
         });
 
         e.target.addEventListener("click", () => {
-          const canBeOccupied = playerOne.ship.placeShip(shipName, [
+          const isSpaceAvailable = playerOne.ship.checkAvailableSpace(
             +xCoord - (shipLength - 1),
             +yCoord,
-          ]);
+            shipName,
+            shipLength
+          );
 
-          if (canBeOccupied) {
-            selectedShip.setAttribute("selected", false);
-            selectedShip.setAttribute("hidden", true);
+          if (isSpaceAvailable) {
+            playerOne.ship.placeShip(shipName, [
+              +xCoord - (shipLength - 1),
+              +yCoord,
+            ]);
+            console.log(playerOne.ship.board);
             addOccupied();
+            selectedShip.setAttribute("selected", "false");
+            selectedShip.setAttribute("hidden", "true");
           }
         });
       }
