@@ -21,7 +21,7 @@ export default function createBoard() {
     boardContainer.prepend(xCoordinateContainer);
     for (let j = 0; j < BOARD_SIZE; j++) {
       const squares = document.createElement("div");
-      helpers().addAttributesToSquare(squares, i, j);
+      helpers().addAttributesToSquare(squares, j, i);
       boardContainer.appendChild(squares);
     }
   }

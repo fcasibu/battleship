@@ -14,7 +14,7 @@ const dom = (() => {
     const shipsToDeploy = document.querySelectorAll(`.ship`);
     shipsToDeploy.forEach((ship) => {
       ship.setAttribute("hidden", "true");
-      ship.setAttribute("selected", false);
+      ship.setAttribute("selected", "false");
     });
   }
 

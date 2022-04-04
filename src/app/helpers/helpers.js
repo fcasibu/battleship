@@ -20,10 +20,10 @@ export default function helpers() {
     "James Cook",
   ];
 
-  function addAttributesToSquare(squares, x, y) {
+  function addAttributesToSquare(squares, xCoord, yCoord) {
     squares.classList.add("square");
-    squares.dataset.y = x;
-    squares.dataset.x = y;
+    squares.dataset.y = yCoord;
+    squares.dataset.x = xCoord;
   }
 
   function getRandomName() {
